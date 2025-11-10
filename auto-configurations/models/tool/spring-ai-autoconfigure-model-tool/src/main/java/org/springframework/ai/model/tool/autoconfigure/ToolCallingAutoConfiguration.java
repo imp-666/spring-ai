@@ -43,6 +43,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.ResolvableType;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -60,13 +61,21 @@ public class ToolCallingAutoConfiguration {
 
 	private static final Logger logger = LoggerFactory.getLogger(ToolCallingAutoConfiguration.class);
 
+	/**
+	 * The default {@link ToolCallbackResolver} resolves tools by name for methods,
+	 * functions, and {@link ToolCallbackProvider} beans.
+	 * <p>
+	 * MCP providers are excluded, to avoid initializing them early with #listTools().
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	ToolCallbackResolver toolCallbackResolver(GenericApplicationContext applicationContext,
 			List<ToolCallback> toolCallbacks, List<ToolCallbackProvider> tcbProviders) {
-
 		List<ToolCallback> allFunctionAndToolCallbacks = new ArrayList<>(toolCallbacks);
-		tcbProviders.stream().map(pr -> List.of(pr.getToolCallbacks())).forEach(allFunctionAndToolCallbacks::addAll);
+		tcbProviders.stream()
+			.filter(pr -> !isMcpToolCallbackProvider(ResolvableType.forInstance(pr)))
+			.map(pr -> List.of(pr.getToolCallbacks()))
+			.forEach(allFunctionAndToolCallbacks::addAll);
 
 		var staticToolCallbackResolver = new StaticToolCallbackResolver(allFunctionAndToolCallbacks);
 
@@ -75,6 +84,15 @@ public class ToolCallingAutoConfiguration {
 			.build();
 
 		return new DelegatingToolCallbackResolver(List.of(staticToolCallbackResolver, springBeanToolCallbackResolver));
+	}
+
+	private static boolean isMcpToolCallbackProvider(ResolvableType type) {
+		if (type.getType().getTypeName().equals("org.springframework.ai.mcp.SyncMcpToolCallbackProvider")
+				|| type.getType().getTypeName().equals("org.springframework.ai.mcp.AsyncMcpToolCallbackProvider")) {
+			return true;
+		}
+		var superType = type.getSuperType();
+		return superType != ResolvableType.NONE && isMcpToolCallbackProvider(superType);
 	}
 
 	@Bean
