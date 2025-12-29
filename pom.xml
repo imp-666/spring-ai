@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2023-2024 the original author or authors.
+  ~ Copyright 2023-2025 the original author or authors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@
 		<module>memory/repository/spring-ai-model-chat-memory-repository-jdbc</module>
 		<module>memory/repository/spring-ai-model-chat-memory-repository-mongodb</module>
 		<module>memory/repository/spring-ai-model-chat-memory-repository-neo4j</module>
+		<module>memory/repository/spring-ai-model-chat-memory-repository-redis</module>
 
 
 
@@ -94,6 +95,7 @@
 		<module>auto-configurations/models/chat/memory/repository/spring-ai-autoconfigure-model-chat-memory-repository-jdbc</module>
 		<module>auto-configurations/models/chat/memory/repository/spring-ai-autoconfigure-model-chat-memory-repository-mongodb</module>
 		<module>auto-configurations/models/chat/memory/repository/spring-ai-autoconfigure-model-chat-memory-repository-neo4j</module>
+		<module>auto-configurations/models/chat/memory/spring-ai-autoconfigure-model-chat-memory-redis</module>
 
 		<module>auto-configurations/models/chat/observation/spring-ai-autoconfigure-model-chat-observation</module>
 
@@ -106,6 +108,7 @@
 		<module>auto-configurations/models/spring-ai-autoconfigure-model-elevenlabs</module>
 		<module>auto-configurations/models/spring-ai-autoconfigure-model-huggingface</module>
 		<module>auto-configurations/models/spring-ai-autoconfigure-model-openai</module>
+		<module>auto-configurations/models/spring-ai-autoconfigure-model-openai-sdk</module>
 		<module>auto-configurations/models/spring-ai-autoconfigure-model-minimax</module>
 		<module>auto-configurations/models/spring-ai-autoconfigure-model-mistral-ai</module>
 		<module>auto-configurations/models/spring-ai-autoconfigure-model-oci-genai</module>
@@ -180,6 +183,7 @@
 		<module>models/spring-ai-oci-genai</module>
 		<module>models/spring-ai-ollama</module>
 		<module>models/spring-ai-openai</module>
+		<module>models/spring-ai-openai-sdk</module>
 		<module>models/spring-ai-postgresml</module>
 		<module>models/spring-ai-stability-ai</module>
 		<module>models/spring-ai-transformers</module>
@@ -203,6 +207,7 @@
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-oci-genai</module>
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-ollama</module>
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-openai</module>
+		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-openai-sdk</module>
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-postgresml-embedding</module>
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-stability-ai</module>
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-transformers</module>
@@ -217,6 +222,7 @@
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-chat-memory-repository-jdbc</module>
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-chat-memory-repository-mongodb</module>
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-chat-memory-repository-neo4j</module>
+		<module>spring-ai-spring-boot-starters/spring-ai-starter-model-chat-memory-repository-redis</module>
 
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-mcp-client</module>
 		<module>spring-ai-spring-boot-starters/spring-ai-starter-mcp-server</module>
@@ -271,12 +277,13 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
-		<kotlin.compiler.version>2.2.21</kotlin.compiler.version>
 
 		<!-- production dependencies -->
-		<spring-boot.version>4.0.0-RC2</spring-boot.version>
+		<spring-boot.version>4.0.0</spring-boot.version>
 		<ST4.version>4.3.4</ST4.version>
 		<azure-open-ai-client.version>1.0.0-beta.16</azure-open-ai-client.version>
+		<openai-sdk.version>4.8.0</openai-sdk.version>
+		<azure-identity.version>1.18.1</azure-identity.version>
 		<jtokkit.version>1.1.0</jtokkit.version>
 		<kotlin.version>2.2.21</kotlin.version>
 
@@ -287,11 +294,11 @@
 		<djl.version>0.32.0</djl.version>
 		<onnxruntime.version>1.19.2</onnxruntime.version>
 		<oci-sdk-version>3.63.1</oci-sdk-version>
-		<com.google.cloud.version>26.60.0</com.google.cloud.version>
-		<com.google.genai.version>1.17.0</com.google.genai.version>
+		<com.google.cloud.version>26.72.0</com.google.cloud.version>
+		<com.google.genai.version>1.30.0</com.google.genai.version>
 		<ibm.sdk.version>9.20.0</ibm.sdk.version>
 		<jsonschema.version>4.38.0</jsonschema.version>
-		<swagger-annotations.version>2.2.30</swagger-annotations.version>
+		<swagger-annotations.version>2.2.38</swagger-annotations.version>
 		<mockk-jvm.version>1.13.13</mockk-jvm.version>
 		<spring-cloud-bindings.version>2.0.3</spring-cloud-bindings.version>
 
@@ -314,7 +321,6 @@
 		<fastjson2.version>2.0.46</fastjson2.version>
 		<azure-core.version>1.55.3</azure-core.version>
 		<azure-json.version>1.5.0</azure-json.version>
-		<azure-identity.version>1.15.4</azure-identity.version>
 		<azure-search.version>11.7.6</azure-search.version>
 		<azure-cosmos.version>5.22.0</azure-cosmos.version>
 		<elasticsearch-java.version>8.18.1</elasticsearch-java.version>
@@ -337,17 +343,16 @@
 		<json-unit-assertj.version>4.1.0</json-unit-assertj.version>
 
 		<!-- MCP-->
-		<mcp.sdk.version>0.16.0</mcp.sdk.version>
-		<mcp-annotations.version>0.7.0</mcp-annotations.version>
+		<mcp.sdk.version>0.17.0</mcp.sdk.version>
+		<mcp-annotations.version>0.8.0</mcp-annotations.version>
 
 		<!-- plugin versions -->
 		<antlr.version>4.13.1</antlr.version>
 		<maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-		<maven-toolchains-plugin.version>3.2.0</maven-toolchains-plugin.version>
+		<maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
 		<!-- The version (range) of the JDK we want to use to compile.
-			This is different from ${java.version} which we use as -release target.
-			This exact property name is recognized by the toolchains plugin. -->
-		<toolchain.jdk.version>[25,)</toolchain.jdk.version>
+			This is different from ${java.version} which we use as -release target. -->
+		<compiler.jdk.version>[21.0.8,)</compiler.jdk.version>
 		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 		<maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
 		<maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
@@ -361,14 +366,14 @@
 		<maven-site-plugin.version>4.0.0-M13</maven-site-plugin.version>
 		<maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-		<spring-javaformat-maven-plugin.version>0.0.43</spring-javaformat-maven-plugin.version>
+		<spring-javaformat-maven-plugin.version>0.0.47</spring-javaformat-maven-plugin.version>
 		<antora-maven-plugin.version>1.0.0-alpha.5</antora-maven-plugin.version>
 		<antora-component-version-maven-plugin.version>0.0.4</antora-component-version-maven-plugin.version>
-		<maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
+		<maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
 		<maven-checkstyle-plugin.failsOnError>true</maven-checkstyle-plugin.failsOnError>
 		<maven-checkstyle-plugin.failOnViolation>true</maven-checkstyle-plugin.failOnViolation>
 		<puppycrawl-tools-checkstyle.version>9.3</puppycrawl-tools-checkstyle.version>
-		<spring-javaformat-checkstyle.version>0.0.43</spring-javaformat-checkstyle.version>
+		<spring-javaformat-checkstyle.version>0.0.47</spring-javaformat-checkstyle.version>
 		<maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 
 		<error-prone.version>2.44.0</error-prone.version>
@@ -381,61 +386,32 @@
 	<build>
 		<plugins>
 			<plugin>
-				<!-- This plugin makes sure we can locate a JDK matching the ${toolchain.jdk.version} constraint.-->
-				<!-- It will be used by e.g. the maven.compiler.plugin, or fail otherwise. -->
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-toolchains-plugin</artifactId>
-				<version>${maven-toolchains-plugin.version}</version>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${maven-enforcer-plugin.version}</version>
 				<executions>
 					<execution>
+						<id>maven-enforcer</id>
 						<goals>
-							<goal>select-jdk-toolchain</goal>
+							<goal>enforce</goal>
 						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${maven-checkstyle-plugin.version}</version>
-				<dependencies>
-					<dependency>
-						<groupId>com.puppycrawl.tools</groupId>
-						<artifactId>checkstyle</artifactId>
-						<version>${puppycrawl-tools-checkstyle.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>io.spring.javaformat</groupId>
-						<artifactId>spring-javaformat-checkstyle</artifactId>
-						<version>${spring-javaformat-checkstyle.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>checkstyle-validation</id>
-						<phase>validate</phase>
-						<inherited>true</inherited>
 						<configuration>
-							<skip>${disable.checks}</skip>
-							<configLocation>src/checkstyle/checkstyle.xml</configLocation>
-							<headerLocation>src/checkstyle/checkstyle-header.txt</headerLocation>
-							<includeTestSourceDirectory>true</includeTestSourceDirectory>
-							<propertyExpansion>
-								checkstyle.build.directory=${project.build.directory}
-								checkstyle.suppressions.file=${project.basedir}/src/checkstyle/checkstyle-suppressions.xml
-								checkstyle.additional.suppressions.file=${project.basedir}/src/checkstyle/checkstyle-suppressions.xml
-								checkstyle.header.file=${project.basedir}/src/checkstyle/checkstyle-header.txt
-							</propertyExpansion>
-							<consoleOutput>true</consoleOutput>
-							<failsOnError>${maven-checkstyle-plugin.failsOnError}
-							</failsOnError>
-							<failOnViolation>
-								${maven-checkstyle-plugin.failOnViolation}
-							</failOnViolation>
+							<rules>
+								<!-- Make sure we run with a JDK that supports the
+								error_prone + nullaway tools correctly. An alternative
+								would have been to use fork=true at the compiler plugin
+								level, but this is more efficient in this big project.
+								See also .mvn/jvm.config -->
+								<requireJavaVersion>
+									<version>${compiler.jdk.version}</version>
+								</requireJavaVersion>
+								<banDuplicatePomDependencyVersions />
+								<!-- TODO <dependencyConvergence /> -->
+								<requireMavenVersion>
+									<version>[3.9.1,)</version>
+								</requireMavenVersion>
+							</rules>
 						</configuration>
-						<goals>
-							<goal>check</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -447,10 +423,12 @@
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
-				<version>${kotlin.compiler.version}</version>
+				<version>${kotlin.version}</version>
 				<configuration>
 					<jvmTarget>${java.version}</jvmTarget>
 					<javaParameters>true</javaParameters>
+					<apiVersion>2.2</apiVersion>
+					<languageVersion>2.2</languageVersion>
 				</configuration>
 				<executions>
 					<execution>
@@ -485,22 +463,8 @@
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<release>${java.version}</release>
-					<fork>true</fork>
 					<compilerArgs>
 						<arg>-parameters</arg>
-						<arg>-XDcompilePolicy=simple</arg>
-						<arg>--should-stop=ifError=FLOW</arg>
-						<arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -XepOpt:NullAway:OnlyNullMarked -XepOpt:NullAway:JSpecifyMode=true</arg>
-						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
-						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
-						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
-						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
-						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
-						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
-						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
-						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
-						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
-						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
 					</compilerArgs>
 					<annotationProcessorPaths>
 						<path>
@@ -532,6 +496,15 @@
 						<goals>
 							<goal>compile</goal>
 						</goals>
+						<configuration>
+							<compilerArgs>
+								<arg>-XDcompilePolicy=simple</arg>
+								<!-- The following arg won't be necessary with JDK25+ -->
+								<arg>-XDaddTypeAnnotationsToSymbol=true</arg>
+								<arg>--should-stop=ifError=FLOW</arg>
+								<arg>-Xplugin:ErrorProne -XepDisableAllChecks -Xep:NullAway:ERROR -XepOpt:NullAway:OnlyNullMarked -XepOpt:NullAway:JSpecifyMode=true</arg>
+							</compilerArgs>
+						</configuration>
 					</execution>
 					<execution>
 						<id>java-test-compile</id>
@@ -548,13 +521,10 @@
 				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<argLine>${surefireArgLine}</argLine>
-
 					<useFile>false</useFile>
 					<trimStackTrace>false</trimStackTrace>
-
 					<!-- Show test timing information -->
 					<reportFormat>plain</reportFormat>
-
 					<!-- Output test execution times in the logs -->
 					<redirectTestOutputToFile>false</redirectTestOutputToFile>
 				</configuration>
@@ -578,10 +548,10 @@
 				<version>${maven-source-plugin.version}</version>
 				<executions>
 					<execution>
-						<id>generate-sources</id>
+						<id>package-sources</id>
 						<phase>package</phase>
 						<goals>
-							<goal>jar</goal>
+							<goal>jar-no-fork</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -638,7 +608,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>generate-javadocs</id>
+						<id>package-javadocs</id>
 						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
@@ -667,6 +637,7 @@
 						<version>${spring-javaformat-maven-plugin.version}</version>
 						<executions>
 							<execution>
+								<id>format-check</id>
 								<phase>validate</phase>
 								<inherited>true</inherited>
 								<goals>
@@ -695,6 +666,7 @@
 						<version>${spring-javaformat-maven-plugin.version}</version>
 						<executions>
 							<execution>
+								<id>format-apply</id>
 								<phase>process-sources</phase>
 								<inherited>true</inherited>
 								<goals>
@@ -707,6 +679,67 @@
 				</plugins>
 			</build>
 
+		</profile>
+		<profile>
+			<id>checkstyle-check</id>
+			<activation>
+				<property>
+					<name>!env.BOGUS</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-checkstyle-plugin</artifactId>
+						<version>${maven-checkstyle-plugin.version}</version>
+						<dependencies>
+							<dependency>
+								<groupId>com.puppycrawl.tools</groupId>
+								<artifactId>checkstyle</artifactId>
+								<version>${puppycrawl-tools-checkstyle.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>io.spring.javaformat</groupId>
+								<artifactId>spring-javaformat-checkstyle</artifactId>
+								<version>${spring-javaformat-checkstyle.version}</version>
+							</dependency>
+						</dependencies>
+						<executions>
+							<execution>
+								<id>checkstyle-validation</id>
+								<phase>process-sources</phase>
+								<inherited>true</inherited>
+								<configuration>
+									<skip>${disable.checks}</skip>
+									<configLocation>src/checkstyle/checkstyle.xml
+									</configLocation>
+									<headerLocation>src/checkstyle/checkstyle-header.txt
+									</headerLocation>
+									<includeTestSourceDirectory>true
+									</includeTestSourceDirectory>
+									<propertyExpansion>
+										checkstyle.build.directory=${project.build.directory}
+										checkstyle.suppressions.file=${project.basedir}/src/checkstyle/checkstyle-suppressions.xml
+										checkstyle.additional.suppressions.file=${project.basedir}/src/checkstyle/checkstyle-suppressions.xml
+										checkstyle.header.file=${project.basedir}/src/checkstyle/checkstyle-header.txt
+									</propertyExpansion>
+									<consoleOutput>true</consoleOutput>
+									<failsOnError>${maven-checkstyle-plugin.failsOnError}
+									</failsOnError>
+									<failOnViolation>
+										${maven-checkstyle-plugin.failOnViolation}
+									</failOnViolation>
+								</configuration>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
 		</profile>
 		<profile>
 			<id>license</id>
@@ -836,6 +869,7 @@
 								<exclude>org.springframework.ai.mistralai/**/*IT.java</exclude>
 								<exclude>org.springframework.ai.oci/**/*IT.java</exclude>
 								<exclude>org.springframework.ai.ollama/**/*IT.java</exclude>								<!-- <exclude>org.springframework.ai.openai/**/*IT.java</exclude> -->
+								<exclude>org.springframework.ai.openaisdk/**/*IT.java</exclude>
 								<exclude>org.springframework.ai.postgresml/**/*IT.java</exclude>
 								<exclude>org.springframework.ai.stabilityai/**/*IT.java</exclude>
 								<exclude>org.springframework.ai.transformers/**/*IT.java</exclude>
