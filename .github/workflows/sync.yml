@@ -20,7 +20,7 @@ jobs:
         run: |
           git remote add upstream https://github.com/spring-projects/spring-ai.git
       - name: Fetch upstream
-        run: git fetch upstream
+        run: git fetch upstream --tags
 
       - name: Merge upstream changes
         run: |
